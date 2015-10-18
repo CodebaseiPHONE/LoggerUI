@@ -6,14 +6,34 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		58AA2D211BCD1358006E3A9A /* Framework */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 58AA2D221BCD1358006E3A9A /* Build configuration list for PBXAggregateTarget "Framework" */;
+			buildPhases = (
+				58AA2D251BCD1385006E3A9A /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Framework;
+			productName = Framework;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		58AA2CFF1BCD071D006E3A9A /* LoggerUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 58AA2CFE1BCD071D006E3A9A /* LoggerUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		58AA2D091BCD0771006E3A9A /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AA2D061BCD0771006E3A9A /* Logger.swift */; settings = {ASSET_TAGS = (); }; };
+		58AA2D0A1BCD0771006E3A9A /* JRTranscriptView.h in Headers */ = {isa = PBXBuildFile; fileRef = 58AA2D071BCD0771006E3A9A /* JRTranscriptView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		58AA2D0B1BCD0771006E3A9A /* JRTranscriptView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58AA2D081BCD0771006E3A9A /* JRTranscriptView.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		58AA2CFB1BCD071D006E3A9A /* LoggerUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LoggerUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		58AA2CFE1BCD071D006E3A9A /* LoggerUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoggerUI.h; sourceTree = "<group>"; };
 		58AA2D001BCD071D006E3A9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		58AA2D061BCD0771006E3A9A /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		58AA2D071BCD0771006E3A9A /* JRTranscriptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRTranscriptView.h; sourceTree = "<group>"; };
+		58AA2D081BCD0771006E3A9A /* JRTranscriptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRTranscriptView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +66,9 @@
 		58AA2CFD1BCD071D006E3A9A /* LoggerUI */ = {
 			isa = PBXGroup;
 			children = (
+				58AA2D061BCD0771006E3A9A /* Logger.swift */,
+				58AA2D071BCD0771006E3A9A /* JRTranscriptView.h */,
+				58AA2D081BCD0771006E3A9A /* JRTranscriptView.m */,
 				58AA2CFE1BCD071D006E3A9A /* LoggerUI.h */,
 				58AA2D001BCD071D006E3A9A /* Info.plist */,
 			);
@@ -60,6 +83,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				58AA2CFF1BCD071D006E3A9A /* LoggerUI.h in Headers */,
+				58AA2D0A1BCD0771006E3A9A /* JRTranscriptView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,10 +114,14 @@
 		58AA2CF21BCD071D006E3A9A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Aromal Sasidharan";
 				TargetAttributes = {
 					58AA2CFA1BCD071D006E3A9A = {
+						CreatedOnToolsVersion = 7.0;
+					};
+					58AA2D211BCD1358006E3A9A = {
 						CreatedOnToolsVersion = 7.0;
 					};
 				};
@@ -111,6 +139,7 @@
 			projectRoot = "";
 			targets = (
 				58AA2CFA1BCD071D006E3A9A /* LoggerUI */,
+				58AA2D211BCD1358006E3A9A /* Framework */,
 			);
 		};
 /* End PBXProject section */
@@ -125,11 +154,29 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		58AA2D251BCD1385006E3A9A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "///\n\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n\n# make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n# Step 1. Build Device and Simulator versions\nxcodebuild -target \"${PROJECT_NAME}\" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\nxcodebuild -target \"${PROJECT_NAME}\" -configuration ${CONFIGURATION} -sdk iphonesimulator -arch x86_64 BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\n\n# Step 2. Copy the framework structure to the universal folder\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework\" \"${UNIVERSAL_OUTPUTFOLDER}/\"\n\n# Step 3. Create universal binary file using lipo and place the combined executable in the copied framework directory\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/${PROJECT_NAME}\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		58AA2CF61BCD071D006E3A9A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58AA2D0B1BCD0771006E3A9A /* JRTranscriptView.m in Sources */,
+				58AA2D091BCD0771006E3A9A /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,32 +275,52 @@
 		58AA2D041BCD071D006E3A9A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = LoggerUI/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.codebase.LoggerUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		58AA2D051BCD071D006E3A9A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = LoggerUI/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.codebase.LoggerUI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		58AA2D231BCD1358006E3A9A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		58AA2D241BCD1358006E3A9A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -274,6 +341,14 @@
 			buildConfigurations = (
 				58AA2D041BCD071D006E3A9A /* Debug */,
 				58AA2D051BCD071D006E3A9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		58AA2D221BCD1358006E3A9A /* Build configuration list for PBXAggregateTarget "Framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				58AA2D231BCD1358006E3A9A /* Debug */,
+				58AA2D241BCD1358006E3A9A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

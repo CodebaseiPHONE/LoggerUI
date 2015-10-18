@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "JRTranscriptView.h"
 //! Project version number for LoggerUI.
 FOUNDATION_EXPORT double LoggerUIVersionNumber;
 
